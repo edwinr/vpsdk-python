@@ -15,13 +15,22 @@ class EventWrapper(object):
         self.handler(self.instance)
 
 class Instance(object):
-    instance = vp_create()
-    events = [None] * 24
-    callbacks = [None] * 17
-    
-    if instance == None:
-        raise(RuntimeError("Could not create VPSDK instance"))
-
+    def __init__(self):
+        self.instance = vp_create()
+        self.events = [None] * 24
+        self.callbacks = [None] * 17
+        if self.instance == None:
+            raise(RuntimeError("Could not create VPSDK instance"))
+    def __del__(self):
+        self.release()
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.release()
+    def release(self):
+        if self.instance is not None:
+            check_error(vp_destroy(self.instance))
+            self.instance = None
     def connect(self, host, port):
         check_error(vp_connect_universe(self.instance, host, port))
     def login(self, username, password, bot_name):
