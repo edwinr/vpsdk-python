@@ -1,6 +1,7 @@
 __all__ = ["Instance"]
 from vpsdk.api import *
 from vpsdk.constants import *
+from vpsdk.events import *
 
 def check_error(rc):
     if rc != 0:
@@ -51,5 +52,17 @@ class Instance(object):
         native_handler = VP_EVENT_HANDLER_FUNC(EventWrapper(self, handler))
         self.events[event] = native_handler
         check_error(vp_event_set(self.instance, event, native_handler))
+    def set_event_chat(self, handler):
+        self.set_event(VP_EVENT_CHAT, lambda sender:
+            handler(sender, ChatEventData(sender.instance)))
+    def set_event_avatar_add(self, handler):
+        self.set_event(VP_EVENT_AVATAR_ADD, lambda sender:
+            handler(sender, AvatarAddEventData(sender.instance)))
+    def set_event_avatar_change(self, handler):
+        self.set_event(VP_EVENT_AVATAR_CHANGE, lambda sender:
+            handler(sender, AvatarAddEventData(sender.instance)))
+    def set_event_avatar_delete(self, handler):
+        self.set_event(VP_EVENT_AVATAR_DELETE, lambda sender:
+            handler(sender, AvatarAddEventData(sender.instance)))
     def say(self, message):
         check_error(vp_say(self.instance, message))
