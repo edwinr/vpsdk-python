@@ -4,7 +4,7 @@ from vpsdk.constants import *
 
 def check_error(rc):
     if rc != 0:
-        raise(RuntimeError("VPSDK error " + str(rc)))
+        raise(RuntimeError("VPSDK error " + VPReturnCodes[rc] + "(" + str(rc) + ")"))
 
 
 class EventWrapper(object):
