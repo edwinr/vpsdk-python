@@ -17,6 +17,7 @@ def check_error(rc):
 check_error(lib.vp_init(c_int(3)))
 lib.vp_create.restype = c_void_p
 lib.vp_string.restype = c_char_p
+lib.vp_data.restype = c_char_p
 lib.vp_float.restype = c_float
 lib.vp_double.restype = c_double
 
@@ -64,6 +65,15 @@ def vp_double(instance, key):
     return lib.vp_double(instance, key)
 def vp_string(instance, key):
     return lib.vp_string(instance, key).decode("utf-8")
+def vp_data(instance, key):
+    length = c_int(0)
+    src = lib.vp_data(instance, c_int(key), byref(length))
+    if length.value > 0:
+        dst = create_string_buffer(length.value)
+        memmove(dst, src, length.value)
+        return dst
+    else:
+        return None
 def vp_int_set(instance, key, value):
     return lib.vp_int_set(instance, c_int(key), c_int(value))
 def vp_float_set(instance, key, value):

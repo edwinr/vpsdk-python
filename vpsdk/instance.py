@@ -64,5 +64,10 @@ class Instance(object):
     def set_event_avatar_delete(self, handler):
         self.set_event(VP_EVENT_AVATAR_DELETE, lambda sender:
             handler(sender, AvatarAddEventData(sender.instance)))
+    def set_event_object(self, handler):
+        self.set_event(VP_EVENT_OBJECT, lambda sender:
+            handler(sender, ObjectAddEventData(sender.instance)))
     def say(self, message):
         check_error(vp_say(self.instance, message))
+    def query_cell(self, x, z, revision):
+        check_error(vp_query_cell_revision(self.instance, x, z, revision))

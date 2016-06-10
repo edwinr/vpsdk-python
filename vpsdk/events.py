@@ -36,3 +36,18 @@ class AvatarDeleteEventData:
 						 vp_float(instance, VP_AVATAR_Z)]
 		self.pitch = vp_float(instance, VP_AVATAR_PITCH)
 		self.yaw = vp_float(instance, VP_AVATAR_YAW)
+class ObjectAddEventData:
+	def __init__(self, instance):
+		self.model = vp_string(instance, VP_OBJECT_MODEL)
+		self.description = vp_string(instance, VP_OBJECT_DESCRIPTION)
+		self.action = vp_string(instance, VP_OBJECT_ACTION)
+		self.position = [vp_double(instance, VP_OBJECT_X),
+						 vp_double(instance, VP_OBJECT_Y),
+						 vp_double(instance, VP_OBJECT_Z)]
+		self.rotation = [vp_float(instance, VP_OBJECT_ROTATION_X),
+						 vp_float(instance, VP_OBJECT_ROTATION_Y),
+						 vp_float(instance, VP_OBJECT_ROTATION_Z),
+						 vp_float(instance, VP_OBJECT_ROTATION_ANGLE)]
+		self.object_type = vp_int(instance, VP_OBJECT_TYPE)
+		self.data = vp_data(instance, VP_OBJECT_DATA)
+		self.session = vp_int(instance, VP_AVATAR_SESSION)
